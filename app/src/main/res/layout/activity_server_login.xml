@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/activity_main"
+    android:background="@drawable/back_ground"
+    tools:context=".ServerLoginActivity">
+
+
+        <TextView
+            android:paddingTop="100dp"
+            android:paddingLeft="130dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Location status:"/>
+
+        <LinearLayout
+            android:paddingLeft="120dp"
+            android:paddingTop="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/id_linerlayout"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:textColor="#060001"
+                android:id="@+id/id_active"
+                android:text="ACTIVE"/>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:textColor="#060001"
+                android:id="@+id/id_in_active"
+                android:text="INACTIVE"/>
+        </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_main"
+        app:layout_constraintTop_toTopOf="@+id/activity_main"
+        app:layout_constraintRight_toRightOf="@+id/activity_main"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_main"
+        android:padding="16dp">
+        <Button
+            android:text="Manage"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:id="@+id/id_btn_manage"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
