@@ -29,6 +29,7 @@ import com.example.ian.locations.adapter.DBAdapter;
 import com.example.ian.locations.model.CheckerReceiver;
 import com.example.ian.locations.model.Receiver;
 import com.example.ian.locations.model.User;
+import com.example.ian.locations.service.OnClearFromRecentService;
 
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
@@ -98,7 +99,7 @@ public class ServerLoginActivity extends AppCompatActivity implements View.OnCli
         sendSmsAsynchronousTAsk();
 
 
-
+        startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
 
 
         //Toast.makeText(getApplicationContext(), isLocationEnabled(getApplicationContext())+"", Toast.LENGTH_LONG).show();
@@ -477,8 +478,5 @@ public class ServerLoginActivity extends AppCompatActivity implements View.OnCli
             // sendMySMS(phone);
         }
     }
-
-
-
 
 }

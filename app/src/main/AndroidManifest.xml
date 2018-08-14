@@ -53,6 +53,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".LoginActivity"
             android:screenOrientation="portrait"></activity>
+
+        <service android:name="com.example.ian.locations.service.OnClearFromRecentService" android:stopWithTask="false" />
     </application>
 
 
