@@ -16,21 +16,21 @@ public class OnClearFromRecentService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("ClearFromRecentService", "Service Started");
+        //Log.d("ClearFromRecentService", "Service Started");
         return START_NOT_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("ClearFromRecentService", "Service Destroyed");
+        //Log.d("ClearFromRecentService", "Service Destroyed");
     }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        Log.e("ClearFromRecentService", "END");
+        //Log.e("ClearFromRecentService", "END");
         //Code here
-        startActivity(new Intent(getApplicationContext(), ServerLoginActivity.class));
-        stopSelf();
+//        startActivity(new Intent(getApplicationContext(), ServerLoginActivity.class));
+//        stopSelf();
     }
 }

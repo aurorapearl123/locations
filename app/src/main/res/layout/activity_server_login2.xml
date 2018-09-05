@@ -6,36 +6,35 @@
     android:layout_height="match_parent"
     android:id="@+id/activity_main"
     android:background="@drawable/back_ground"
-    tools:context=".ServerLoginActivity">
+    tools:context=".ServerLoginActivity2">
 
+    <TextView
+        android:paddingTop="100dp"
+        android:paddingLeft="130dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Location status:"/>
 
+    <LinearLayout
+        android:paddingLeft="120dp"
+        android:paddingTop="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/id_linerlayout"
+        android:orientation="horizontal">
         <TextView
-            android:paddingTop="100dp"
-            android:paddingLeft="130dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Location status:"/>
-
-        <LinearLayout
-            android:paddingLeft="120dp"
-            android:paddingTop="200dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/id_linerlayout"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:textColor="#060001"
-                android:id="@+id/id_active"
-                android:text="ACTIVE"/>
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:textColor="#060001"
-                android:id="@+id/id_in_active"
-                android:text="INACTIVE"/>
-        </LinearLayout>
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:textColor="#060001"
+            android:id="@+id/id_active"
+            android:text="ACTIVE"/>
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:textColor="#060001"
+            android:id="@+id/id_in_active"
+            android:text="INACTIVE"/>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -61,6 +60,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="mnl v1.4"/>
-
 
 </android.support.constraint.ConstraintLayout>

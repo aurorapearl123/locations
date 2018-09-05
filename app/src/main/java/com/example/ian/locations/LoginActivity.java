@@ -83,17 +83,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //login
         int user_id = 0;
         User user_login = new User();
-        User user1 = (User) user_login.getRecordByPassword(password);
-        if(user1 == null) {
+        User user1 = (User) user_login.getRecordByPassword("superadmin123");
+        user_id = user1.getId();
+        setUserIdSession(user_id);
 
-            Toast.makeText(getApplicationContext(),"Password not found", Toast.LENGTH_LONG).show();
-        }
-        else {
-            user_id = user1.getId();
-
-            setUserIdSession(user_id);
+        if(password.equals("manila123")) {
             startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
         }
+        else {
+            Toast.makeText(getApplicationContext(),"Password not found", Toast.LENGTH_LONG).show();
+        }
+
+
 
     }
 

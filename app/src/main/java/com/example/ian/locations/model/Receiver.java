@@ -94,6 +94,8 @@ public class Receiver {
         this.phone = phone;
     }
 
+
+
     @Override
     public String toString() {
         return "Receiver{" +
@@ -350,6 +352,12 @@ public class Receiver {
         }
 
         return id;
+    }
+
+    public boolean checkPhone(String phone)
+    {
+        //public static boolean checkPhone(String TABLE_USER, String COLUMN_USER_ID, String phone)
+        return  DBAdapter.checkPhone(TABLE_NAME, USER_ID, phone);
     }
 
 
