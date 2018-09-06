@@ -241,7 +241,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                     "09992203955",
             };
 
-            //addPhoneList(data);
+            addPhoneList(data);
 
            // addPhoneList(test_data);
         }
