@@ -2,8 +2,10 @@ package com.example.ian.locations;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,9 +23,14 @@ import com.example.ian.locations.adapter.DBAdapter;
 import com.example.ian.locations.model.CheckerReceiver;
 import com.example.ian.locations.model.Receiver;
 
+import org.joda.time.DateTime;
+import org.joda.time.Minutes;
+import org.joda.time.format.DateTimeFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static android.Manifest.permission.SEND_SMS;
@@ -39,9 +46,16 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     static final int REQUEST_LOCATION = 1;
 
+    // The app's AlarmManager, which provides access to the system alarm services.
+    private AlarmManager alarmMgr;
+    // The pending intent that is triggered when the alarm fires.
+    private PendingIntent alarmIntent;
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        Log.wtf("START-BOOT", "START ALARM");
 
         //get location
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -52,7 +66,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         //String now = getCurrentHour();
         Log.wtf("RUNNINT-10", "I'm running in 2 minutes");
-        getLocation(context);
+        //getLocation(context);
+
+        checkLastReceiverSendCreatedAt(context);
+
+
 
 
 //        String start = "09:00";
@@ -148,15 +166,15 @@ public class AlarmReceiver extends BroadcastReceiver {
                 long id = checkerReceiver_add.add();
 
                 if (id == 0) {
-                    Log.wtf("CHECKER_RECEIVER", "NOT INSERTED");
+                    //Log.wtf("CHECKER_RECEIVER", "NOT INSERTED");
                 } else {
 
                     //SEND SMS
                     Receiver receiver2 = new Receiver();
                     String phone = receiver2.getPhoneByPosition(increment_position);
-                    Log.wtf("SEND-PHONE-dakora", phone + " sending");
+                    //Log.wtf("SEND-PHONE-dakora", phone + " sending");
 
-                    Log.wtf("MY-POSITION", increment_position + "");
+                    //Log.wtf("MY-POSITION", increment_position + "");
                     sendSms(phone, message, context);
                     //INSERT POSITION CHECKERS
 
@@ -213,18 +231,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-    public String getSessionId(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(LoginActivity.MY_PREFS_NAME, MODE_PRIVATE);
-        String restoredText = prefs.getString("user_id", null);
-        //Toast.makeText(getApplicationContext(), "USER ID"+restoredText, Toast.LENGTH_SHORT).show();
-        if (restoredText != null) {
-            //String name = prefs.getString("name", "No name defined");//"No name defined" is the default value.
-            //int idName = prefs.getInt("idName", 0); //0 is the default value.
-            //Log.wtf("SESSION_ERROR", "USER ID NOT FOUND");
-        }
-
-        return restoredText;
-    }
 
     public void getLocation(Context context) {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -251,5 +257,87 @@ public class AlarmReceiver extends BroadcastReceiver {
         {
             Toast.makeText(context, "No location",Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void checkLastReceiverSendCreatedAt(Context context)
+    {
+        CheckerReceiver checkerReceiver = new CheckerReceiver();
+        String created_at = checkerReceiver.getLastRecordCreatedAt();
+        // Log.wtf("CREATED_AT_DATA", created_at+"");
+        //check the last record if already 30 minutes then add
+
+
+
+        if(!created_at.isEmpty()) {
+
+            //Log.wtf("TIME-START", created_at+"");
+
+            //parseTime("2018-08-02 01:51:19");
+            try {
+//
+                //Log.wtf("databasecreatedat", created_at+"");
+                org.joda.time.format.DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+                DateTime dt = formatter.parseDateTime(created_at);
+
+                //current date
+                SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String current_date_format = s.format(new Date());
+                //Log.wtf("CURRENT-DATE", current_date_format+"");
+
+
+                org.joda.time.format.DateTimeFormatter formatter2 = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+                DateTime currentTime = formatter2.parseDateTime(current_date_format);
+
+                boolean result = Minutes.minutesBetween(new DateTime(dt), new DateTime(currentTime))
+                        .isGreaterThan(Minutes.minutes(30));
+
+                if(result) {
+                    //Log.wtf("HALA-true", "checking time "+result+"");
+
+                    Log.wtf("SEND---------", "SENDING ME PLEASE to already 30 minutes");
+                    //sendReceiver();
+                    getLocation(context);
+                }
+                else {
+                    Log.wtf("HALA", "checking time not yet 30 minutes "+result+"");
+                }
+
+            } catch(Exception e) { //this generic but you can control another types of exception
+                // look the origin of excption
+                // Log.wtf("ERROR_KA", e.toString()+"");
+            }
+
+
+
+
+            //hoursAgo(created_at);
+        }
+        else {
+
+            getLocation(context);
+            Log.wtf("empty", "empty cursor for created_at");
+        }
+
+    }
+
+    public void setAlarm(Context context) {
+
+
+        Log.wtf("RUNNINT-10", "I'm running in 2 minutes set me");
+
+        int interval = 5000; // 5 seconds
+        alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                System.currentTimeMillis(), interval, alarmIntent);
+
+        ComponentName receiver = new ComponentName(context, StartMyServiceAtBootReceiver.class);
+        PackageManager pm = context.getPackageManager();
+
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
     }
 }

@@ -86,8 +86,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         User user1 = (User) user_login.getRecordByPassword("superadmin123");
         user_id = user1.getId();
         setUserIdSession(user_id);
-
-        if(password.equals("manila123")) {
+        String demo = "demo123";
+        String manila = "manila123";
+        if(password.equals(manila)) {
             startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
         }
         else {
