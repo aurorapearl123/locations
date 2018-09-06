@@ -13,16 +13,13 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,19 +33,14 @@ import org.joda.time.DateTime;
 import org.joda.time.Minutes;
 import org.joda.time.format.DateTimeFormat;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import static android.Manifest.permission.SEND_SMS;
 
-public class ServerLoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class ServerLoginActivity2 extends AppCompatActivity implements View.OnClickListener  {
 
     TextView inActive;
     TextView active;
@@ -62,17 +54,7 @@ public class ServerLoginActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
-        //getSupportActionBar().hide(); //hide the title bar
-
-        setContentView(R.layout.activity_server_login);
-
-
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)  !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.READ_PHONE_STATE}, 1);
-        }
+        setContentView(R.layout.activity_server_login2);
 
         android.support.v7.app.ActionBar ab = getSupportActionBar();
         ab.setTitle("SERVER");
@@ -107,19 +89,16 @@ public class ServerLoginActivity extends AppCompatActivity implements View.OnCli
         sendSmsAsynchronousTAsk();
 
 
-        //startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
-
-        preparedLoacation();
+        startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
 
 
-        //Toast.makeText(getApplicationContext(), isLocationEnabled(getApplicationContext())+"", Toast.LENGTH_LONG).show();
     }
 
     public void checkLastReceiverSendCreatedAt()
     {
         CheckerReceiver checkerReceiver = new CheckerReceiver();
         String created_at = checkerReceiver.getLastRecordCreatedAt();
-       // Log.wtf("CREATED_AT_DATA", created_at+"");
+        // Log.wtf("CREATED_AT_DATA", created_at+"");
         //check the last record if already 30 minutes then add
 
 
@@ -152,12 +131,12 @@ public class ServerLoginActivity extends AppCompatActivity implements View.OnCli
                     sendReceiver();
                 }
                 else {
-                   // Log.wtf("HALA", "checking time "+result+"");
+                    // Log.wtf("HALA", "checking time "+result+"");
                 }
 
             } catch(Exception e) { //this generic but you can control another types of exception
                 // look the origin of excption
-               // Log.wtf("ERROR_KA", e.toString()+"");
+                // Log.wtf("ERROR_KA", e.toString()+"");
             }
 
 
@@ -173,7 +152,7 @@ public class ServerLoginActivity extends AppCompatActivity implements View.OnCli
 
 
     public static boolean isLocationEnabled(Context context) {
-    int locationMode = 0;
+        int locationMode = 0;
         String locationProviders;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
@@ -199,7 +178,7 @@ public class ServerLoginActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         if(isLocationEnabled(getApplicationContext())) {
             active.setTextColor(Color.parseColor("#0a8e02") );
-            startActivity(new Intent(ServerLoginActivity.this, LoginActivity.class));
+            startActivity(new Intent(ServerLoginActivity2.this, LoginActivity.class));
         }
         else {
             inActive.setTextColor(Color.parseColor("#ff0000"));
@@ -224,12 +203,12 @@ public class ServerLoginActivity extends AppCompatActivity implements View.OnCli
                 //Log.wtf("cursor_position", receiverList.get(0).getId()+"");
                 //SAVE CURSOR
                 int cursor_position = receiver.getCursorPosition(receiverList.get(0).getId() + "");
-               // Log.wtf("CURSOR-POSITION", cursor_position + "");
+                // Log.wtf("CURSOR-POSITION", cursor_position + "");
                 CheckerReceiver checkerReceiver_add = new CheckerReceiver();
                 checkerReceiver_add.setCursor_position(cursor_position);
                 long id = checkerReceiver_add.add();
                 if (id == 0) {
-                   // Log.wtf("CHECKER_RECEIVER", "NOT INSERTED");
+                    // Log.wtf("CHECKER_RECEIVER", "NOT INSERTED");
                 } else {
                     //Log.wtf("INSERTED", id + "");
                     String phone = receiver.getPhoneByPosition(cursor_position);
@@ -240,7 +219,7 @@ public class ServerLoginActivity extends AppCompatActivity implements View.OnCli
             //Log.wtf("NOT-FOUND", "INSERT ME");
         } else {
             //get checkers
-           // Log.wtf("FOUND-CHECKERS", "GET RECEIVER IS");
+            // Log.wtf("FOUND-CHECKERS", "GET RECEIVER IS");
             // GET LAST RECORD FOR CURSOR POSITION IN CHECKER RECEIVER TABLE
             CheckerReceiver checker = new CheckerReceiver();
             int position = Integer.parseInt(checker.getLastRecord());
@@ -256,7 +235,7 @@ public class ServerLoginActivity extends AppCompatActivity implements View.OnCli
             //Log.wtf("RECEIVER-COUNT", receiver1.getCursorCount()+"");
 
             if(increment_position < receiver1.getCursorCount()) {
-               // Log.wtf("dakora", increment_position+"");
+                // Log.wtf("dakora", increment_position+"");
                 //IF INCREMENT POSITION IS GREATER THAN POSITION GET THE FIRST POSITION THEN INSERT FIRST POSITION
                 //Log.wtf("insert", "heere");
                 //GET PHONE RECEIVER BASE ON POSITION
@@ -367,7 +346,7 @@ public class ServerLoginActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new android.support.v7.app.AlertDialog.Builder(ServerLoginActivity.this)
+        new android.support.v7.app.AlertDialog.Builder(ServerLoginActivity2.this)
                 .setMessage(message)
                 .setPositiveButton("OK", okListener)
                 .setNegativeButton("Cancel", null)
@@ -488,16 +467,4 @@ public class ServerLoginActivity extends AppCompatActivity implements View.OnCli
             // sendMySMS(phone);
         }
     }
-
-    public void preparedLoacation()
-    {
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        }
-        else{
-
-        }
-    }
-
 }

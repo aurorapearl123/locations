@@ -127,9 +127,34 @@ public class DBAdapter
         return id;
     }
 
+    public static boolean checkPhone(String TABLE_USER, String COLUMN_USER_ID, String phone) {
+        // array of columns to fetch
+        String[] columns = {
+                COLUMN_USER_ID
+        };
+        //SQLiteDatabase db = this.getReadableDatabase();
+        // selection criteria
+        String selection = "phone" + " = ?";
 
+        // selection arguments
+        String[] selectionArgs = {phone};
 
+        Cursor cursor = db.query(TABLE_USER, //Table to query
+                columns,                    //columns to return
+                selection,                  //columns for the WHERE clause
+                selectionArgs,              //The values for the WHERE clause
+                null,                       //group the rows
+                null,                       //filter by row groups
+                null);                      //The sort order
 
+        int cursorCount = cursor.getCount();
+
+        if (cursorCount > 0) {
+            return true;
+        }
+
+        return false;
+    }
 
     //get All records
     public static Cursor getAllRecords(String tableName){

