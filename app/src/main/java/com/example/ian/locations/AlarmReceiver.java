@@ -324,7 +324,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 
         Log.wtf("RUNNINT-10", "I'm running in 2 minutes set me");
-
         int interval = 5000; // 5 seconds
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);

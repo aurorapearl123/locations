@@ -69,4 +69,9 @@ public class TimeChangedReceiver extends BroadcastReceiver {
         }
     }
 
+    public void setTimeChange(Context context) {
+
+        Log.wtf("CHANGE-TIME", "YOU CHANGE THE TIME FROM REBOOT starting me");
+    }
+
 }

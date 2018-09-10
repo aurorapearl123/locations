@@ -88,8 +88,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setUserIdSession(user_id);
         String demo = "demo123";
         String manila = "manila123";
-        if(password.equals(manila)) {
+        String jsp = "jsp123";
+        String migs = "migs123";
+        String benit = "benit123";
+        if(password.equals(benit)) {
             startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
+            finish();
         }
         else {
             Toast.makeText(getApplicationContext(),"Password not found", Toast.LENGTH_LONG).show();

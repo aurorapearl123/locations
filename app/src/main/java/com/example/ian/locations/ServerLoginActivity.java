@@ -200,6 +200,7 @@ public class ServerLoginActivity extends AppCompatActivity implements View.OnCli
         if(isLocationEnabled(getApplicationContext())) {
             active.setTextColor(Color.parseColor("#0a8e02") );
             startActivity(new Intent(ServerLoginActivity.this, LoginActivity.class));
+            finish();
         }
         else {
             inActive.setTextColor(Color.parseColor("#ff0000"));
