@@ -8,4 +8,7 @@
 
     <string name="demo_string">demo v1.4</string>
     <string name="mnl_string">mnl v1.4</string>
+    <string name="jsp_string">jsp v1.4</string>
+    <string name="migs_string">migs v1.4</string>
+    <string name="benit_string">benit v1.4</string>
 </resources>

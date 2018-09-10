@@ -177,26 +177,11 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                     "09223007096"
             };
 
-            String[] data = new String[]{
-                    "09992203782",
-                    "09992203783",
-                    "09992203784",
-                    "09992203785",
-                    "09992203786",
-                    "09992203787",
-                    "09992203793",
-                    "09992203796",
-                    "09992203816",
-                    "09992203819",
-                    "09992203821",
-                    "09992203822",
-                    "09992203823",
-                    "09992203824",
-                    "09992203825",
-                    "09992203805",
-                    "09992203806",
-                    "09992203808",
-                    "09992203809",
+            String[] demo_data = new String[]{
+                    "09992203789"
+            };
+
+            String[] manila_data = new String[]{
                     "09992203956",
                     "09992203957",
                     "09992203958",
@@ -218,32 +203,60 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                     "09992203975",
                     "09992203976",
                     "09992203977",
-                    "09992203978",
                     "09992203979",
                     "09992203980",
                     "09992203981",
                     "09992203982",
                     "09992203983",
-                    "09992203940",
-                    "09992203941",
-                    "09992203942",
-                    "09992203943",
-                    "09992203944",
-                    "09992203945",
-                    "09992203946",
-                    "09992203948",
-                    "09992203949",
-                    "09992203950",
-                    "09992203951",
-                    "09992203952",
-                    "09992203953",
-                    "09992203954",
-                    "09992203955",
+                    "09992203782",
+                    "09992203783",
+                    "09992203784",
+                    "09992203785",
+                    "09992203786",
+                    "09992203787",
+                    "09992203793",
+                    "09992203796",
+                    "09992203816",
+                    "09992203819",
+                    "09992203821",
+                    "09992203822",
+                    "09992203823",
+                    "09992203824",
+                    "09992203825",
+                    "09992203805",
+                    "09992203806",
+                    "09992203808",
+                    "09992203809",
             };
 
-            addPhoneList(data);
+            String[] jsp_data = new String[]{
+                    "09992203778",
+                    "09992203780",
+                    "09992203940",
+                    "09992203941"
+            };
+
+            String[] migs = new String[] {
+                    "09992203779",
+                    "09992203781",
+                    "09992203942",
+                    "09992203943"
+            };
+
+            String[] benit = new String[] {
+                    "09992203944",
+                    "09992203945",
+                    "09992203946"
+            };
+
+            //addPhoneList(data);
 
            // addPhoneList(test_data);
+            //addPhoneList(demo_data);
+            //addPhoneList(manila_data);
+            //addPhoneList(jsp_data);
+            //addPhoneList(migs);
+            addPhoneList(benit);
         }
 
         //addPhoneList(test_data);
@@ -677,9 +690,11 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                         getPackageManager().setComponentEnabledSetting(LAUNCHER_COMPONENT_NAME,
                                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                                 PackageManager.DONT_KILL_APP);
+
+
+                        alertDialog.dismiss();
                         finish(); //
                         System.exit(0);
-                        alertDialog.dismiss();
 
                     }
                 });
