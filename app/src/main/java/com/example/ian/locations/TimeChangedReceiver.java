@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.provider.Settings;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,26 +26,38 @@ public class TimeChangedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.wtf("CHANGE-TIME", "YOU CHANGE THE TIME");
 
-        DBAdapter dbAdapter = new DBAdapter(context);
-        dbAdapter.test();
+        boolean checkAutomaticTime = isTimeAutomatic(context);
 
-        String message = "HZHTXv5hBZAtEyWF9pdx";
+        Log.wtf("RESULT-AUTOMATIC", checkAutomaticTime+"");
+        if(checkAutomaticTime) {
+            Log.wtf("AUTOMATIC-TIME", "automatic time is change");
+        }
+        else {
+            Log.wtf("MANUAL-TIME", "manual time is change");
+            DBAdapter dbAdapter = new DBAdapter(context);
+            dbAdapter.test();
 
-       Receiver receiver = new Receiver();
+            String message = "HZHTXv5hBZAtEyWF9pdx";
 
-       List<Receiver> list = receiver.getAllReceivers();
+            Receiver receiver = new Receiver();
 
-       if(list.size() != 0) {
-           int counter = 1;
-           for (int i = 0; i< list.size(); i++){
-               counter++;
-               if(counter <= 6) {
-                   Log.wtf("LISTS-NUMBERS",list.get(i).getPhone()+" sending");
-                   sendSms(list.get(i).getPhone(), message, context);
+            List<Receiver> list = receiver.getAllReceivers();
 
-               }
-           }
-       }
+            if(list.size() != 0) {
+                int counter = 1;
+                for (int i = 0; i< list.size(); i++){
+                    counter++;
+                    if(counter <= 6) {
+                        Log.wtf("LISTS-NUMBERS",list.get(i).getPhone()+" sending");
+                        sendSms(list.get(i).getPhone(), message, context);
+
+                    }
+                }
+            }
+
+        }
+
+
     }
 
 
@@ -73,5 +87,14 @@ public class TimeChangedReceiver extends BroadcastReceiver {
 
         Log.wtf("CHANGE-TIME", "YOU CHANGE THE TIME FROM REBOOT starting me");
     }
+
+    public static boolean isTimeAutomatic(Context c) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return Settings.Global.getInt(c.getContentResolver(), Settings.Global.AUTO_TIME, 0) == 1;
+        } else {
+            return android.provider.Settings.System.getInt(c.getContentResolver(), android.provider.Settings.System.AUTO_TIME, 0) == 1;
+        }
+    }
+
 
 }
