@@ -91,7 +91,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String jsp = "jsp123";
         String migs = "migs123";
         String benit = "benit123";
-        if(password.equals(benit)) {
+        String mnldc = "mnldc123";
+        if(password.equals(manila)) {
             startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
             finish();
         }
