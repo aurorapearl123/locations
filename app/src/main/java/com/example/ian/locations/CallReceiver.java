@@ -1,47 +1,85 @@
 package com.example.ian.locations;
 
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
 
 public class CallReceiver extends BroadcastReceiver {
 
+    private static final String TAG = "PhoneStatReceiver";
+
+    private static boolean incomingFlag = false;
+
+    private static String incoming_number = null;
     String LAUNCHER_NUMBER = "#7878*";
-    private static final ComponentName LAUNCHER_COMPONENT_NAME = new ComponentName(
-            "com.example", "com.example.ian.locations.StartMyServiceAtBootReceiver");
-
-
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {
 
-        String phoneNubmer = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
-        if (LAUNCHER_NUMBER.equals(phoneNubmer)) {
-            setResultData(null);
+            incomingFlag = false;
 
-            if (isLauncherIconVisible(context)) {
-                //showToast(context, "Inside if..");
-//                Intent appIntent = new Intent(context, MainActivity.class);
-//                appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(appIntent);
-                //fn_unhide(context);
+            String phoneNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+            if(phoneNumber.equals(LAUNCHER_NUMBER)) {
+                setResultData(null);
                 Intent appIntent = new Intent(context, ServerLoginActivity2.class);
                 appIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(appIntent);
-            } else {
-                Log.wtf("NOT-HIDE", "app is not hide");
             }
 
+            //Log.i(TAG, "call OUT:" + phoneNumber);
+            //Toast.makeText(context, "call OUT:" + phoneNumber, Toast.LENGTH_LONG).show();
+
+
+        } else {
+            TelephonyManager tm = (TelephonyManager) context.getSystemService(Service.TELEPHONY_SERVICE);
+
+            switch (tm.getCallState()) {
+
+                case TelephonyManager.CALL_STATE_RINGING:
+
+                    incomingFlag = true;
+
+                    incoming_number = intent.getStringExtra("incoming_number");
+
+                   // Log.i(TAG, "RINGING :" + incoming_number);
+                    //Toast.makeText(context, "RINGING :" + incoming_number, Toast.LENGTH_LONG).show();
+
+                    break;
+
+                case TelephonyManager.CALL_STATE_OFFHOOK:
+
+                    if (incomingFlag) {
+
+                        //Log.i(TAG, "incoming ACCEPT :" + incoming_number);
+                        //Toast.makeText(context, "incoming ACCEPT :" + incoming_number, Toast.LENGTH_LONG).show();
+
+                    }
+
+                    break;
+                case TelephonyManager.CALL_STATE_IDLE:
+
+                    if (incomingFlag) {
+
+                        //Log.i(TAG, "incoming IDLE");
+                        //Toast.makeText(context, "incoming IDLE", Toast.LENGTH_LONG).show();
+
+
+                    }
+
+                    break;
+
+            }
 
         }
-
     }
 
-    private boolean isLauncherIconVisible(Context context) {
-        int enabledSetting = context.getPackageManager().getComponentEnabledSetting(LAUNCHER_COMPONENT_NAME);
-        return enabledSetting != PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+    public void setCallReceiver(Context context){
+        Log.wtf("SETTING-CALL", "starting call receiver");
     }
-
 }

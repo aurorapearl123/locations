@@ -60,7 +60,7 @@
         android:paddingLeft="140dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/benit_string"/>
+        android:text="@string/mnl_string"/>
 
 
 </android.support.constraint.ConstraintLayout>

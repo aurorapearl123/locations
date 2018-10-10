@@ -56,6 +56,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         Log.wtf("START-BOOT", "START ALARM");
+       // Toast.makeText(context, "runnig me", Toast.LENGTH_LONG).show();
 
         //get location
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -255,7 +256,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         else
         {
-            Toast.makeText(context, "No location",Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "No location",Toast.LENGTH_LONG).show();
         }
     }
 

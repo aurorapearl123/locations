@@ -15,12 +15,15 @@ public class StartMyServiceAtBootReceiver extends BroadcastReceiver {
 
     TimeChangedReceiver timeChangedReceiver = new TimeChangedReceiver();
 
+    CallReceiver callReceiver = new CallReceiver();
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
 
             alarmReceiver.setAlarm(context);
             timeChangedReceiver.setTimeChange(context);
+            callReceiver.setCallReceiver(context);
 
         }
     }
