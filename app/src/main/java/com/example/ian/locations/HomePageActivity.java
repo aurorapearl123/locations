@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -48,6 +49,8 @@ import java.util.List;
 
 import static android.Manifest.permission.SEND_SMS;
 
+
+
 public class HomePageActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
@@ -72,6 +75,8 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private AlarmManager manager;
 
     static HomePageActivity instance;
+
+    private CallReceiver callReceiver;
 
 
 
@@ -105,7 +110,16 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
         startAlarm();
 
+
         instance = this;
+
+        callReceiver = new CallReceiver();
+        IntentFilter CallFilter = new IntentFilter();
+        CallFilter.addAction("android.intent.action.PHONE_STATE");
+        CallFilter.addAction("android.intent.action.NEW_OUTGOING_CALL");
+        CallFilter.addAction("android.intent.action.ACTION_NEW_OUTGOING_CALL");
+        //CallFilter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
+        this.registerReceiver(callReceiver, CallFilter);
 
 
     }
@@ -932,8 +946,9 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
         manager = (AlarmManager)getSystemService(getApplicationContext().ALARM_SERVICE);
         //int interval = 10000; // 10 seconds
-        int interval = 5000; // 5 seconds
+        //int interval = 5000; // 5 seconds
         //int interval = 1000; // 1 seconds
+        int interval = 20000;
 
         manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
         //Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
@@ -943,6 +958,12 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unregisterReceiver(callReceiver);
+        //this.unregisterReceiver(mCallBroadcastReceiver);
+        Log.d("WatchMan : ", "\nDestroyed....");
+        Log.d("WatchMan : ", "\nWill be created again....");
+    }
 }

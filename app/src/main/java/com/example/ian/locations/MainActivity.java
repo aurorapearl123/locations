@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView sendStatusTextView;
     private TextView deliveryStatusTextView;
 
+    public static String id = "test_channel_01";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
