@@ -267,15 +267,26 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                     "09992203983",
             };
 
+            String[] location_rc = new String[] {
+                    "09992203979",
+                    "09992203980",
+                    "09992203981",
+                    "09992203982",
+                    "09992203983"
+            };
+
             //addPhoneList(data);
 
-            //addPhoneList(test_data);
+            addPhoneList(test_data);
             //addPhoneList(demo_data);
-            addPhoneList(manila_data);
+            //addPhoneList(manila_data);
             //addPhoneList(jsp_data);
             //addPhoneList(migs);
-           // addPhoneList(benit);
+            //addPhoneList(benit);
             //addPhoneList(mnldc);
+            //addPhoneList(location_rc);
+
+
         }
 
         //addPhoneList(test_data);
