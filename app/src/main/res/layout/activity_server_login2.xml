@@ -59,6 +59,6 @@
         android:paddingLeft="140dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/rc_string"/>
+        android:text="@string/memory_bntyn"/>
 
 </android.support.constraint.ConstraintLayout>

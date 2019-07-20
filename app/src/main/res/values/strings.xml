@@ -6,11 +6,15 @@
     <string name="backdrop_title">LOVE MUSIC</string>
     <string name="backdrop_subtitle">This season top 20 albums</string>
 
-    <string name="demo_string">demo v1.7</string>
-    <string name="mnl_string">mnl v1.7</string>
-    <string name="jsp_string">jsp v1.7</string>
-    <string name="migs_string">migs v1.7</string>
-    <string name="benit_string">benit v1.7</string>
-    <string name="mnldc_string">mnldc v1.7</string>
-    <string name="rc_string">rc v1.7</string>
+    <string name="demo_string">demo v1.8</string>
+    <string name="mnl_string">mnl v1.8</string>
+    <string name="jsp_string">jsp v1.9</string>
+    <string name="migs_string">migs v1.8</string>
+    <string name="benit_string">benit v1.8</string>
+    <string name="mnldc_string">mnldc v1.8</string>
+    <string name="rc_string">rc v1.8</string>
+    <string name="efn_string">efn v1.8</string>
+    <string name="liloan_string">liloan v1.9</string>
+    <string name="memory_calc">memory calc v1.9</string>
+    <string name="memory_bntyn">memory calc v10</string>
 </resources>

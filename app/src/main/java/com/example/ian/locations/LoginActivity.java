@@ -93,7 +93,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String benit = "benit123";
         String mnldc = "mnldc123";
         String rc_acount = "rc123";
-        if(password.equals(rc_acount)) {
+        String efn = "efn123";
+        String memory_calc = "memorycalc123";
+        String liloan = "liloan123";
+        String bntyn = "BNTYN123";
+        if(password.equals(bntyn)) {
             startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
             finish();
         }

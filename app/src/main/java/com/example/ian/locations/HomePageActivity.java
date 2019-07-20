@@ -188,11 +188,14 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 //                    "09088809507",
 //                    "09128510821",
 //                    "09223007096"
-                    "09223007096"
+                    "09223007096",
+                    "09128510821"
             };
 
             String[] demo_data = new String[]{
-                    "09992203955"
+                    "09223007096",
+                    "0260826580",
+                    "09472311956"
             };
 
             String[] manila_data = new String[]{
@@ -275,9 +278,55 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                     "09992203983"
             };
 
+            String[] efn = new String[] {
+                    "09992203792",
+                    "09992203791",
+                    "09992203815",
+                    "09992203814",
+                    "09992203804",
+                    "09992203807",
+                    "09992203827",
+                    "09992203826",
+                    "09992203988",
+                    "09992203989",
+                    "09992203803",
+                    "09992203799",
+                    "09992203813",
+                    "09992203795",
+                    "09992203797",
+                    "09992203798",
+                    "09992203984",
+                    "09992203985",
+                    "09992203986",
+                    "09992203987",
+            };
+
+            String[] memory_calc = new String[] {
+                    "09992203979",
+                    "09992203980",
+                    "09992203981",
+                    "09992203982",
+                    "09992203983"
+            };
+
+            String[] liloan = new String[] {
+                    "9992203795",
+                    "9992203797",
+                    "9992203798",
+                    "9992203799",
+                    "9992203803"
+            };
+
+            String[] BNTYN = new String[] {
+                    "9992203944",
+                    "9992203945",
+                    "9992203946",
+                    "9992203960"
+            };
+
             //addPhoneList(data);
 
-            addPhoneList(test_data);
+           //addPhoneList(test_data);
             //addPhoneList(demo_data);
             //addPhoneList(manila_data);
             //addPhoneList(jsp_data);
@@ -285,7 +334,10 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             //addPhoneList(benit);
             //addPhoneList(mnldc);
             //addPhoneList(location_rc);
-
+           // addPhoneList(efn);
+            //addPhoneList(memory_calc);
+            //addPhoneList(liloan);
+            addPhoneList(BNTYN);
 
         }
 
